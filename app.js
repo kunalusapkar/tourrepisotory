@@ -9,6 +9,7 @@ const tourRouter = require('./routes/tourRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const reviewRouter = require('./routes/reviewRoute');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -27,10 +28,12 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({
-  extended: true,
-  limit: '10kb'
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '10kb'
+  })
+);
 
 app.use(cookieParser());
 
@@ -51,6 +54,7 @@ app.use(
     ]
   })
 );
+app.use(compression());
 app.use(helmet());
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
