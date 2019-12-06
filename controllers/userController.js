@@ -32,6 +32,7 @@ const upload = multer({
 });
 
 
+
 exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
@@ -53,6 +54,10 @@ const filterObj = (obj, ...allowedFields) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];
   });
   return newObj;
+};
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
 };
 
 // exports.getUser = (req, res) => {
@@ -103,19 +108,19 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   console.log(filteredBody);
 
-  // if (req.file) filteredBody.photo = req.file.filename;
+  if (req.file) filteredBody.photo = req.file.filename;
   // update user document
-  // const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
-  //   new: true,
-  //   runValidators: true
-  // });
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+    new: true,
+    runValidators: true
+  });
 
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: {
-  //     user: updatedUser
-  //   }
-  // });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser
+    }
+  });
 });
 
 exports.deleteMe = catchAsync(async (req, res) => {
@@ -127,8 +132,3 @@ exports.deleteMe = catchAsync(async (req, res) => {
     data: null
   });
 });
-
-exports.getMe = (req, res, next) => {
-  req.params.id = req.user.id;
-  next();
-};

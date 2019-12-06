@@ -9015,9 +9015,9 @@ var updateSettings = function updateSettings(data, type) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
-          console.log(data);
-          _context.prev = 1;
+          _context.prev = 0;
           url = type === 'password' ? 'http://localhost:3000/api/v1/users/updateMyPassword' : 'http://localhost:3000/api/v1/users/updateMe';
+          console.log(data);
           _context.next = 5;
           return regeneratorRuntime.awrap((0, _axios.default)({
             method: 'PATCH',
@@ -9027,21 +9027,20 @@ var updateSettings = function updateSettings(data, type) {
 
         case 5:
           res = _context.sent;
+          console.log(res);
 
-          // console.log(data)
           if (res.data.status === 'success') {
             (0, _alerts.showAlert)('success', "".concat(type.toUpperCase(), "succesfully")); // window.setTimeout(() => {
             //     location.assign('/');
             // }, 1500);
           }
 
-          console.log(res);
           _context.next = 13;
           break;
 
         case 10:
           _context.prev = 10;
-          _context.t0 = _context["catch"](1);
+          _context.t0 = _context["catch"](0);
           (0, _alerts.showAlert)('error', _context.t0.response.data.message);
 
         case 13:
@@ -9049,7 +9048,7 @@ var updateSettings = function updateSettings(data, type) {
           return _context.stop();
       }
     }
-  }, null, null, [[1, 10]]);
+  }, null, null, [[0, 10]]);
 };
 
 exports.updateSettings = updateSettings;
@@ -9408,13 +9407,32 @@ if (userDataForm) {
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]); // const name = document.getElementById('name').value;
     // const email = document.getElementById('email').value;
-    // for (var value of form.values()) {
-    //     console.log(value);
-    // }
 
-    (0, _updateSettings.updateSettings)({
-      form: form
-    }, 'data');
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = form.values()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var value = _step.value;
+        console.log(value);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    (0, _updateSettings.updateSettings)(form, 'data');
   });
 }
 
@@ -9483,7 +9501,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57149" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65528" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

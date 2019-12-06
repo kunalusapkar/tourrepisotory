@@ -25,7 +25,7 @@ router.route('/distances/:latlng/unit/:unit').get(tourController.getDistances);
 router
     .route('/:id')
     .get(tourController.getTours)
-    .patch(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.updateTours)
+    .patch(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.uploadTourImages, tourController.resizeTourImages, tourController.updateTours)
     .delete(authController.protect, authController.restrictTo('admin', 'lead-guide'), tourController.deleteTour);
 // Users Route
 

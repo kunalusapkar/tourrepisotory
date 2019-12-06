@@ -54,12 +54,10 @@ if (userDataForm) {
         form.append('photo', document.getElementById('photo').files[0]);
         // const name = document.getElementById('name').value;
         // const email = document.getElementById('email').value;
-        // for (var value of form.values()) {
-        //     console.log(value);
-        // }
-        updateSettings({
-            form
-        }, 'data');
+        for (var value of form.values()) {
+            console.log(value);
+        }
+        updateSettings(form, 'data');
     });
 }
 
