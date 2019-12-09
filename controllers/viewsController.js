@@ -32,14 +32,14 @@ exports.getTour = catchAsync(async (req, res, next) => {
     // Build template
 
     // render template
-    res.status(200).render('/tour', {
+    res.status(200).render('tour', {
         title: `${tour.name} Tour`,
         tour
     });
 });
 
 exports.getLoginForm = catchAsync(async (req, res, next) => {
-    res.status(200).render('/login', {
+    res.status(200).render('login', {
         title: 'Log into your account'
     });
 });
