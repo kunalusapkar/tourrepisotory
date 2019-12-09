@@ -17,9 +17,9 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
-// app.set('view engine', 'pug');
-// app.set('views', path.join(__dirname, 'views'));
-// app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // body parser reading data from req body
 app.use(
@@ -35,56 +35,51 @@ app.use(
   })
 );
 
-
 app.use(cookieParser());
 
-
-app.get('/', (req, res) => {
-  res.send("Hello");
-});
 // data sanitazation against nosql query inject
-// app.use(mongoSanitize());
-// // data sanitazation against XSS attack
-// app.use(xss());
-// // Security set http headers
-// app.use(
-//   hpp({
-//     whitelist: [
-//       'duration',
-//       'ratingsQuantity',
-//       'ratingsAverage',
-//       'maxGroupSize',
-//       'difficulty',
-//       'price'
-//     ]
-//   })
-// );
-// app.use(compression());
-// app.use(helmet());
-// if (process.env.NODE_ENV === 'development') {
-//   app.use(morgan('dev'));
-// }
-// // limit request from same API
-// const limiter = rateLimit({
-//   max: 100,
-//   windowMs: 60 * 60 * 1000,
-//   message: 'Too many request fromt this IP ,please try in an hour'
-// });
-// app.use('/api', limiter);
+app.use(mongoSanitize());
+// data sanitazation against XSS attack
+app.use(xss());
+// Security set http headers
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price'
+    ]
+  })
+);
+app.use(compression());
+app.use(helmet());
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+// limit request from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many request fromt this IP ,please try in an hour'
+});
+app.use('/api', limiter);
 
-// // app.use(express.static(`${__dirname}/public`));
+// app.use(express.static(`${__dirname}/public`));
 
-// app.use((req, res, next) => {
-//   req.requestTime = new Date().toISOString();
-//   console.log(req.cookies);
-//   next();
-// });
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  console.log(req.cookies);
+  next();
+});
 
-// app.use('/', viewRouter);
-// app.use('/api/v1/tours', tourRouter);
-// app.use('/api/v1/users', userRouter);
-// app.use('/api/v1/reviews', reviewRouter);
-// app.use('/api/v1/bookings', bookingRouter);
+app.use('/', viewRouter);
+app.use('/api/v1/tours', tourRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 // app.all('*', (req, res, next) => {
 //   // res.status(404).json({
