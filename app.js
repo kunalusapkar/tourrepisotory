@@ -8,8 +8,10 @@ const userRouter = require('./routes/userRoute');
 const tourRouter = require('./routes/tourRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 const reviewRouter = require('./routes/reviewRoute');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -21,6 +23,18 @@ app.enable('trust proxy');
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+// implement cors
+app.use(cors());
+
+app.options('*', cors());
+
+app.use(
+  express.raw()
+);
+
+app.post('/webhook-checkout', bookingController.webhookCheckout);
+// for complex request like delete or update
+// app.options('/api/v1/tours/:id', cors());
 
 // body parser reading data from req body
 app.use(
